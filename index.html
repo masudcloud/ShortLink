@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShortU - Link Shortener with Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #7B68EE;
+            color: white;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+        }
+        #shorten-form {
+            max-width: 400px;
+            margin: auto;
+            background-color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #shorten-form label {
+            color: white;
+        }
+        #short-url {
+            margin-top: 20px;
+        }
+        .btn {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ShortU - Link Shortener</h1>
+    </header>
+
+    <div id="shorten-form">
+        <h2>Shorten your link</h2>
+        <form id="shorten-link-form">
+            <label for="original-url">Original URL:</label>
+            <input type="url" id="original-url" name="original-url" required>
+            <button type="button" onclick="shortenUrl()" class="btn">Shorten</button>
+        </form>
+        <div id="short-url"></div>
+    </div>
+
+    <div id="dashboard">
+        <h2>Link Dashboard</h2>
+        <!-- Display shortened links and their analytics here -->
+    </div>
+
+    <div id="popup"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+    <script>
+        function shortenUrl() {
+            // In a real-world scenario, you would make an AJAX request to the backend to generate a short URL.
+            // For simplicity, let's just display a placeholder short URL here.
+            const originalUrl = document.getElementById('original-url').value;
+            const shortUrl = `http://example.com/${generateRandomString()}`;
+            
+            // Display the short URL to the user
+            document.getElementById('short-url').innerHTML = `
+                <p>Shortened URL:</p>
+                <input type="text" value="${shortUrl}" id="shortened-url-input" readonly>
+                <button class="btn" data-clipboard-target="#shortened-url-input" onclick="copyToClipboard()">Copy to Clipboard</button>
+            `;
+
+            // Show "Shortened Done" popup at the top
+            showPopup('Shortened Done');
+            
+            // Initialize clipboard.js
+            new ClipboardJS('.btn');
+        }
+
+        function copyToClipboard() {
+            // Show "Copy Success" popup at the top
+            showPopup('Copy Success');
+        }
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            popup.innerText = message;
+            popup.style.display = 'block';
+
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000);
+        }
+
+        function generateRandomString() {
+            // This is a simple function to generate a random string for the short URL.
+            // In a real application, you would likely use a more sophisticated method.
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+
+            for (let i = 0; i < 6; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+
+            return result;
+        }
+    </script>
+</body>
+</html>
